@@ -1,11 +1,8 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '2.7.3'
 }
-jar {
-    manifest {
-        attributes 'Main-Class': 'org.bat2.VacationWorkerApplication'
-    }
-}
+
 group 'org.bat2'
 version '1.0-SNAPSHOT'
 
