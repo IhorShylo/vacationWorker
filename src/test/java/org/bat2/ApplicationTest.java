@@ -2,11 +2,11 @@ package org.bat2;
 
 import org.junit.jupiter.api.Test;
 
-class VacationWorkerApplicationTest {
+class ApplicationTest {
 
     @Test
     public void verifyNoExceptionThrown() {
-        VacationWorkerApplication.main(new String[]{});
+        Application.main(new String[]{});
     }
 
 }
