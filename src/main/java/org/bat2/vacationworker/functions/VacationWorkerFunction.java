@@ -7,9 +7,10 @@ import com.google.cloud.functions.HttpResponse;
 import java.io.BufferedWriter;
 
 public class VacationWorkerFunction implements HttpFunction {
+    public static final String API_KEY = "d2dfccf7084e0a6b400742de00baa8d0";
     @Override
     public void service(HttpRequest request, HttpResponse response) throws Exception {
         BufferedWriter writer = response.getWriter();
-        writer.write("Hello World!");
+        writer.write("My API KEY: " + API_KEY);
     }
 }

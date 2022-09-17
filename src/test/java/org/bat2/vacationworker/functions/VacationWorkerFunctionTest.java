@@ -42,6 +42,6 @@ public class VacationWorkerFunctionTest {
         new VacationWorkerFunction().service(request, response);
 
         writerOut.flush();
-        assertThat(responseOut.toString()).contains("Hello World!");
+        assertThat(responseOut.toString()).contains("My API KEY: " + VacationWorkerFunction.API_KEY);
     }
 }
