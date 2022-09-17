@@ -44,8 +44,8 @@ To deploy the function with an HTTP trigger, run the following command in the he
 
 ```
 gcloud auth login
-gcloud config set project PROJECT_ID
-gcloud functions deploy user-function-manual --region europe-west3  --entry-point functions.UserFunction --runtime java17 --trigger-http --memory 512MB --allow-unauthenticated --timeout 90 --min-instances 0 --max-instances 1 --service-account user-function@for-developers-358919.iam.gserviceaccount.com
+gcloud config set project vacation-worker-project
+gcloud functions deploy vacation-worker-function-manual --region europe-west3  --entry-point org.bat2.vacationworker.functions.VacationWorkerFunction --runtime java17 --trigger-http --memory 512MB --allow-unauthenticated --timeout 90 --min-instances 0 --max-instances 1 --service-account vacation-worker-function@vacation-worker-project.iam.gserviceaccount.com
 ```
 
 where user-function-manual is the registered name by which your function will be identified in the console, and
@@ -54,5 +54,5 @@ where user-function-manual is the registered name by which your function will be
 To view logs for your function with the gcloud CLI, use the logs read command, followed by the name of the function:
 
 ```
-gcloud functions logs read user-function-manual --region europe-west3 
+gcloud functions logs read vacation-worker-function-manual --region europe-west3 
 ```
