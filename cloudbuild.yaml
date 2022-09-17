@@ -15,5 +15,5 @@ steps:
       - --min-instances=0
       - --max-instances=1
       - --allow-unauthenticated
-      - --vacation-worker-function@vacation-worker-project.iam.gserviceaccount.com
+      - --service-account=vacation-worker-function@vacation-worker-project.iam.gserviceaccount.com
       - --quiet
