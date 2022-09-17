@@ -1,0 +1,19 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - gcloud
+      - functions
+      - deploy
+      - vacation-worker-function
+      - --entry-point=org.bat2.vacationworker.functions.VacationWorkerFunction
+      - --region=europe-west3
+      - --source=.
+      - --trigger-http
+      - --runtime=java17
+      - --memory=512MB
+      - --timeout=90
+      - --min-instances=0
+      - --max-instances=1
+      - --allow-unauthenticated
+      - --vacation-worker-function@vacation-worker-project.iam.gserviceaccount.com
+      - --quiet
