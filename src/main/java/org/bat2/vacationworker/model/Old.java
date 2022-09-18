@@ -1,28 +1,18 @@
 
 package org.bat2.vacationworker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Getter;
+import lombok.Setter;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "idList"
-})
-
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
 public class Old {
 
     @JsonProperty("idList")
     private String idList;
-
-    @JsonProperty("idList")
-    public String getIdList() {
-        return idList;
-    }
-
-    @JsonProperty("idList")
-    public void setIdList(String idList) {
-        this.idList = idList;
-    }
 
 }

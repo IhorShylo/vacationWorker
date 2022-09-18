@@ -9,10 +9,8 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
-public class Card {
+public class BoardList {
 
-    @JsonProperty("idList")
-    private String idList;
     @JsonProperty("id")
     private String id;
     @JsonProperty("name")

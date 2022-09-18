@@ -84,58 +84,84 @@ trigger local endpoint
 curl -X POST -H "Content-Type: application/json" \
 localhost:8080 \
 -d '{
-  "action": {
-    "id": "51f9424bcd6e040f3c002412",
-    "idMemberCreator": "4fc78a59a885233f4b349bd9",
-    "data": {
-      "board": {
-        "name": "Trello Development",
-        "id": "4d5ea62fd76aa1136000000c"
-      },
-      "card": {
-        "idShort": 1458,
-        "name": "Webhooks",
-        "id": "51a79e72dbb7e23c7c003778"
-      },
-      "voted": true
-    },
-    "type": "voteOnCard",
-    "date": "2013-07-31T16:58:51.949Z",
-    "memberCreator": {
-      "id": "4fc78a59a885233f4b349bd9",
-      "avatarHash": "2da34d23b5f1ac1a20e2a01157bfa9fe",
-      "fullName": "Doug Patti",
-      "initials": "DP",
-      "username": "doug"
-    }
-  },
   "model": {
-    "id": "4d5ea62fd76aa1136000000c",
-    "name": "Trello Development",
-    "desc": "Trello board used by the Trello team to track work on Trello.  How meta!\n\nThe development of the Trello API is being tracked at https://trello.com/api\n\nThe development of Trello Mobile applications is being tracked at https://trello.com/mobile",
+    "id": "62f227668555a62731adef73",
+    "name": "Погоджено з номером відпускного",
     "closed": false,
-    "idOrganization": "4e1452614e4b8698470000e0",
-    "pinned": true,
-    "url": "https://trello.com/b/nC8QJJoZ/trello-development",
-    "prefs": {
-      "permissionLevel": "public",
-      "voting": "public",
-      "comments": "public",
-      "invitations": "members",
-      "selfJoin": false,
-      "cardCovers": true,
-      "canBePublic": false,
-      "canBeOrg": false,
-      "canBePrivate": false,
-      "canInvite": true
+    "idBoard": "62f227668555a62731adef6a",
+    "pos": 49152
+  },
+  "action": {
+    "id": "6326fe2a8e0327015cd59891",
+    "idMemberCreator": "58ff63c4de44163bb34295c8",
+    "data": {
+      "card": {
+        "idList": "62f227668555a62731adef72",
+        "id": "632450e2022d65013426ef80",
+        "name": "26: Гришко Василь Михайлович з 20.09.2022 року на 3+1",
+        "idShort": 285,
+        "shortLink": "Vd77nebv"
+      },
+      "old": {
+        "idList": "62f227668555a62731adef73"
+      },
+      "board": {
+        "id": "62f227668555a62731adef6a",
+        "name": "Відпустки",
+        "shortLink": "oFHklB3l"
+      },
+      "listBefore": {
+        "id": "62f227668555a62731adef73",
+        "name": "Погоджено з номером відпускного"
+      },
+      "listAfter": {
+        "id": "62f227668555a62731adef72",
+        "name": "На розгляді в штабі полку"
+      }
     },
-    "labelNames": {
-      "yellow": "Infrastructure",
-      "red": "Bug",
-      "purple": "Repro'd",
-      "orange": "Feature",
-      "green": "Mobile",
-      "blue": "Verified"
+    "appCreator": null,
+    "type": "updateCard",
+    "date": "2022-09-18T11:16:58.693Z",
+    "limits": null,
+    "display": {
+      "translationKey": "action_move_card_from_list_to_list",
+      "entities": {
+        "card": {
+          "type": "card",
+          "idList": "62f227668555a62731adef72",
+          "id": "632450e2022d65013426ef80",
+          "shortLink": "Vd77nebv",
+          "text": "26: Гришко Василь Михайлович з 20.09.2022 року на 3+1"
+        },
+        "listBefore": {
+          "type": "list",
+          "id": "62f227668555a62731adef73",
+          "text": "Погоджено з номером відпускного"
+        },
+        "listAfter": {
+          "type": "list",
+          "id": "62f227668555a62731adef72",
+          "text": "На розгляді в штабі полку"
+        },
+        "memberCreator": {
+          "type": "member",
+          "id": "58ff63c4de44163bb34295c8",
+          "username": "ihorshylo",
+          "text": "Tofus"
+        }
+      }
+    },
+    "memberCreator": {
+      "id": "58ff63c4de44163bb34295c8",
+      "activityBlocked": false,
+      "avatarHash": "c4cd8a017262481e1d7bf18d0c91f7e4",
+      "avatarUrl": "https://trello-members.s3.amazonaws.com/58ff63c4de44163bb34295c8/c4cd8a017262481e1d7bf18d0c91f7e4",
+      "fullName": "Tofus",
+      "idMemberReferrer": null,
+      "initials": "T",
+      "nonPublic": {},
+      "nonPublicAvailable": true,
+      "username": "ihorshylo"
     }
   }
 }' 

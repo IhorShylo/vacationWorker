@@ -22,20 +22,23 @@ dependencies {
     compileOnly 'com.google.cloud.functions:functions-framework-api:1.0.4'
 
     // To run function locally using Functions Framework's local invoker
-    invoker 'com.google.cloud.functions.invoker:java-function-invoker:1.1.0'
+    invoker 'com.google.cloud.functions.invoker:java-function-invoker:1.1.1'
 
     // These dependencies are only used by the tests.
     testImplementation 'com.google.cloud.functions:functions-framework-api:1.0.4'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'com.google.truth:truth:1.1.3'
-    testImplementation 'org.mockito:mockito-core:4.5.1'
+    testImplementation 'org.mockito:mockito-core:4.8.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     implementation 'com.google.code.gson:gson:2.9.1'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.2.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.4'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+
 
 }
 
@@ -45,7 +48,7 @@ tasks.register("runFunction", JavaExec) {
     classpath(configurations.invoker)
     inputs.files(configurations.runtimeClasspath, sourceSets.main.output)
     args(
-            '--target', project.findProperty('run.functionTarget') ?: '',
+            '--target', project.findProperty('run.functionTarget') ?: 'org.bat2.vacationworker.functions.VacationWorkerFunction',
             '--port', project.findProperty('run.port') ?: 8080
     )
     doFirst {

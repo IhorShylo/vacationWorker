@@ -1,11 +1,9 @@
 package org.bat2.vacationworker.functions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
-import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 import org.bat2.vacationworker.model.Request;
 
 import java.io.BufferedReader;
@@ -21,15 +19,21 @@ public class VacationWorkerFunction implements HttpFunction {
     public void service(HttpRequest request, HttpResponse response) throws Exception {
         final BufferedReader reader = request.getReader();
         final String body = reader.lines().collect(Collectors.joining());
-        Gson gson = new Gson();
-        try {
-            final Request reqModel = gson.fromJson(reader, Request.class);
-            logger.info("Action Type:" + reqModel.getAction().getType());
-            response.setStatusCode(HttpURLConnection.HTTP_OK);
-        } catch (JsonSyntaxException | JsonIOException e) {
-            logger.log(Level.WARNING, "Can't parse request body: {}", body);
-            logger.log(Level.WARNING, e.getMessage());
-            response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        ObjectMapper mapper = new ObjectMapper();
+
+        if (!body.isEmpty() && "POST".equals(request.getMethod())) {
+            try {
+                final Request reqModel = mapper.readValue(body, Request.class);
+                final String type = reqModel.getAction().getType();
+                final String translationKey = reqModel.getAction().getDisplay().getTranslationKey();
+                logger.log(Level.INFO, "Action Type:" + type);
+                logger.log(Level.INFO, "Translation key: " + translationKey);
+                response.setStatusCode(HttpURLConnection.HTTP_OK);
+            } catch (Exception e) {
+                logger.log(Level.WARNING, "Can't parse request body: {}", body);
+                logger.log(Level.WARNING, e.getMessage());
+                response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+            }
         }
 
     }
