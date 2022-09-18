@@ -26,6 +26,8 @@ public class VacationWorkerFunction implements HttpFunction {
                 final Request reqModel = mapper.readValue(body, Request.class);
                 final String type = reqModel.getAction().getType();
                 final String translationKey = reqModel.getAction().getDisplay().getTranslationKey();
+                final String cardName = reqModel.getAction().getData().getCard().getName();
+                logger.log(Level.INFO, "Card name:" + cardName);
                 logger.log(Level.INFO, "Action Type:" + type);
                 logger.log(Level.INFO, "Translation key: " + translationKey);
                 response.setStatusCode(HttpURLConnection.HTTP_OK);
