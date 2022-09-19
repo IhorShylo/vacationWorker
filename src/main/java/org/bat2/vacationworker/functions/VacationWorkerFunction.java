@@ -19,23 +19,27 @@ public class VacationWorkerFunction implements HttpFunction {
     public void service(HttpRequest request, HttpResponse response) throws Exception {
         final BufferedReader reader = request.getReader();
         final String body = reader.lines().collect(Collectors.joining());
+        if (body.isEmpty()) {
+            logger.log(Level.WARNING, "Invalid request: req body is empty");
+            response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+            return;
+        }
+        logger.info("Request body: " + body);
         ObjectMapper mapper = new ObjectMapper();
 
-        if (!body.isEmpty() && "POST".equals(request.getMethod())) {
-            try {
-                final Request reqModel = mapper.readValue(body, Request.class);
-                final String type = reqModel.getAction().getType();
-                final String translationKey = reqModel.getAction().getDisplay().getTranslationKey();
-                final String cardName = reqModel.getAction().getData().getCard().getName();
-                logger.log(Level.INFO, "Card name:" + cardName);
-                logger.log(Level.INFO, "Action Type:" + type);
-                logger.log(Level.INFO, "Translation key: " + translationKey);
-                response.setStatusCode(HttpURLConnection.HTTP_OK);
-            } catch (Exception e) {
-                logger.log(Level.WARNING, "Can't parse request body: {}", body);
-                logger.log(Level.WARNING, e.getMessage());
-                response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
-            }
+        try {
+            final Request reqModel = mapper.readValue(body, Request.class);
+            final String type = reqModel.getAction().getType();
+            final String translationKey = reqModel.getAction().getDisplay().getTranslationKey();
+            final String cardName = reqModel.getAction().getData().getCard().getName();
+            logger.log(Level.INFO, "Card name:" + cardName);
+            logger.log(Level.INFO, "Action Type:" + type);
+            logger.log(Level.INFO, "Translation key: " + translationKey);
+            response.setStatusCode(HttpURLConnection.HTTP_OK);
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Something went wrong. Request body: {}", body);
+            logger.log(Level.WARNING, e.getMessage());
+            response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
         }
 
     }
