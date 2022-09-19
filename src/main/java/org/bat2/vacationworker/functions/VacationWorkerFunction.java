@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 
 public class VacationWorkerFunction implements HttpFunction {
     private static final Logger logger = Logger.getLogger(VacationWorkerFunction.class.getName());
+    public static final String TARGET_LIST_ID = "62f227668555a62731adef73";
+    public static final String VALID_ACTION_TYPE = "updateCard";
+    public static final String VALID_TRANSLATION_KEY = "action_move_card_from_list_to_list";
+
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws Exception {

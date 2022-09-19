@@ -7,56 +7,44 @@
     "pos": 49152
   },
   "action": {
-    "id": "6326fe2a8e0327015cd59891",
+    "id": "63289fe5aeb41d01f03c0ca3",
     "idMemberCreator": "58ff63c4de44163bb34295c8",
     "data": {
       "card": {
-        "idList": "62f227668555a62731adef72",
-        "id": "632450e2022d65013426ef80",
-        "name": "26: Гришко Василь Михайлович з 20.09.2022 року на 3+1",
-        "idShort": 285,
-        "shortLink": "Vd77nebv"
+        "name": "[1460] 21: Кужньов Володимир Володимирович з 20.09.2022 року на  3+1",
+        "id": "6324200c89058e0467a7e69b",
+        "idShort": 281,
+        "shortLink": "hcEtkIHp"
       },
       "old": {
-        "idList": "62f227668555a62731adef73"
+        "name": "21: Кужньов Володимир Володимирович з 20.09.2022 року на  3+1"
       },
       "board": {
         "id": "62f227668555a62731adef6a",
         "name": "Відпустки",
         "shortLink": "oFHklB3l"
       },
-      "listBefore": {
+      "list": {
         "id": "62f227668555a62731adef73",
         "name": "Погоджено з номером відпускного"
-      },
-      "listAfter": {
-        "id": "62f227668555a62731adef72",
-        "name": "На розгляді в штабі полку"
       }
     },
     "appCreator": null,
     "type": "updateCard",
-    "date": "2022-09-18T11:16:58.693Z",
+    "date": "2022-09-19T16:59:17.016Z",
     "limits": null,
     "display": {
-      "translationKey": "action_move_card_from_list_to_list",
+      "translationKey": "action_renamed_card",
       "entities": {
         "card": {
           "type": "card",
-          "idList": "62f227668555a62731adef72",
-          "id": "632450e2022d65013426ef80",
-          "shortLink": "Vd77nebv",
-          "text": "26: Гришко Василь Михайлович з 20.09.2022 року на 3+1"
+          "id": "6324200c89058e0467a7e69b",
+          "shortLink": "hcEtkIHp",
+          "text": "[1460] 21: Кужньов Володимир Володимирович з 20.09.2022 року на  3+1"
         },
-        "listBefore": {
-          "type": "list",
-          "id": "62f227668555a62731adef73",
-          "text": "Погоджено з номером відпускного"
-        },
-        "listAfter": {
-          "type": "list",
-          "id": "62f227668555a62731adef72",
-          "text": "На розгляді в штабі полку"
+        "name": {
+          "type": "text",
+          "text": "21: Кужньов Володимир Володимирович з 20.09.2022 року на  3+1"
         },
         "memberCreator": {
           "type": "member",
