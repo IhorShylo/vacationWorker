@@ -1,5 +1,5 @@
 
-package org.bat2.vacationworker.model;
+package org.bat2.vacationworker.model.trello;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
