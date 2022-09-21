@@ -1,23 +1,20 @@
 package org.bat2.vacationworker.functions;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.when;
-
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
-
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(JUnit4.class)
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.net.HttpURLConnection;
+
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class VacationWorkerFunctionTest {
 
     @Mock
@@ -25,23 +22,24 @@ public class VacationWorkerFunctionTest {
     @Mock
     private HttpResponse response;
 
-    private BufferedWriter writerOut;
-    private StringWriter responseOut;
+    private static VacationWorkerFunction vacationWorkerFunction;
 
-    @Before
-    public void beforeTest() throws IOException {
-        MockitoAnnotations.initMocks(this);
+    @BeforeAll
+    static void beforeTest() {
+        vacationWorkerFunction = new VacationWorkerFunction();
 
-        responseOut = new StringWriter();
-        writerOut = new BufferedWriter(responseOut);
-        when(response.getWriter()).thenReturn(writerOut);
+
     }
 
     @Test
-    public void DummyTest() throws Exception {
-//        new VacationWorkerFunction().service(request, response);
-//
-//        writerOut.flush();
-        assertThat(true);
+    void successFunctionExecutionTest() throws Exception {
+        FileReader requestIn = new FileReader("src/test/resources/req/moveCardToTargetListReq.json");
+        BufferedReader readerIn = new BufferedReader(requestIn);
+        when(request.getReader()).thenReturn(readerIn);
+        when(request.getMethod()).thenReturn("POST");
+
+        vacationWorkerFunction.service(request, response);
+
+        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_OK);
     }
 }
