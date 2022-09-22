@@ -1,6 +1,5 @@
 package org.bat2.vacationworker.functions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
@@ -14,6 +13,7 @@ import org.bat2.vacationworker.service.VacationService;
 import org.bat2.vacationworker.service.impl.GoogleService;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.logging.Logger;
@@ -28,7 +28,9 @@ public class VacationWorkerFunction implements HttpFunction {
     private final VacationService vacationService = new GoogleService();
 
     @Override
-    public void service(HttpRequest request, HttpResponse response) {
+    public void service(HttpRequest request, HttpResponse response) throws IOException {
+
+        BufferedWriter writer = response.getWriter();
         try {
             logger.info("Start request processing");
             final String cardName = processRequest(request);
@@ -41,21 +43,18 @@ public class VacationWorkerFunction implements HttpFunction {
             logger.info("Start vacation record saving");
             vacationService.saveVacation(vacationRecord);
             logger.info("Vacation record saved successfully");
-
+            writer.write("Card: " + cardName + "saved successfully");
             response.setStatusCode(HttpURLConnection.HTTP_OK);
-        } catch (JsonProcessingException e) {
-            logger.warning("Can't parse request JSON. " + e.getMessage());
-            response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
-        } catch (IOException e) {
-            logger.warning("Invalid request reader. " + e.getMessage());
-            response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
         } catch (UnexpectedRequestException e) {
+            writer.write(e.getMessage());
             logger.warning(e.getMessage());
             response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
         } catch (UnsupportedTrelloActionException e) {
+            writer.write(e.getMessage());
             logger.info(e.getMessage());
             response.setStatusCode(HttpURLConnection.HTTP_UNSUPPORTED_TYPE);
         } catch (InvalidCardNameException e) {
+            writer.write(e.getMessage());
             logger.severe(e.getMessage());
             response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
         }
