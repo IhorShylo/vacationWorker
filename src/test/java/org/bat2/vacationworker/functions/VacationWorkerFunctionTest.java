@@ -52,7 +52,7 @@ public class VacationWorkerFunctionTest {
 
 
         verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_OK);
-        assertThat(responseOut.toString()).contains("Card: " + cardName + "saved successfully");
+        assertThat(responseOut.toString()).contains("Card: " + cardName + " saved successfully");
     }
 
     @ParameterizedTest

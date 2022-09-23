@@ -43,7 +43,7 @@ public class VacationWorkerFunction implements HttpFunction {
 
             logger.info("Start card name processing");
             VacationRecord vacationRecord = cardService.parseName(card.getName());
-            logger.info("Card name processing finished successfully");
+            logger.info("Card name processing finished successfully. Parsed object: " + vacationRecord.toString());
 
             logger.info("Start card label processing");
             final String labelName = cardService.getLabelName(card.getId());

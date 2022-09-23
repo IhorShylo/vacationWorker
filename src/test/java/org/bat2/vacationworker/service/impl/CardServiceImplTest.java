@@ -6,7 +6,6 @@ import org.bat2.vacationworker.model.trello.Card;
 import org.bat2.vacationworker.model.trello.Label;
 import org.bat2.vacationworker.service.CardService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,6 +21,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,13 +75,16 @@ class CardServiceImplTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForParseName")
-    @Disabled
-        //TODO remove and finish test impl
     void parseNameTest(String cardName, VacationRecord expectedResult) {
         final VacationRecord result = cardService.parseName(cardName);
-        assertThat(result).isEqualTo(expectedResult);
-
-
+        assertAll(
+                () -> assertEquals(expectedResult.getName(), result.getName()),
+                () -> assertEquals(expectedResult.getDays(), result.getDays()),
+                () -> assertEquals(expectedResult.getObject(), result.getObject()),
+                () -> assertEquals(expectedResult.getUnit(), result.getUnit()),
+                () -> assertEquals(expectedResult.getVacNumber(), result.getVacNumber()),
+                () -> assertEquals(expectedResult.getStartDate(), result.getStartDate())
+        );
     }
 
     private static Stream<Arguments> provideDataForParseName() {
@@ -104,12 +108,6 @@ class CardServiceImplTest {
                         new VacationRecord("Гришко Василь Михайлович", null,
                                 null, 26, "20.09.2022", 4)),
                 Arguments.of("26:Гришко Василь Михайлович з 20.09.2022 року на 3+1",
-                        new VacationRecord("Гришко Василь Михайлович", null,
-                                null, 26, "20.09.2022", 4)),
-                Arguments.of("26 Гришко Василь Михайлович з 20.09.2022 року на 3+1",
-                        new VacationRecord("Гришко Василь Михайлович", null,
-                                null, 26, "20.09.2022", 4)),
-                Arguments.of("26 - Гришко Василь Михайлович з 20.09.2022 року на 3+1",
                         new VacationRecord("Гришко Василь Михайлович", null,
                                 null, 26, "20.09.2022", 4)),
                 Arguments.of("[1459] Гришко Василь Михайлович з 20.09.2022 року на 3+1",
@@ -141,11 +139,26 @@ class CardServiceImplTest {
                                 null, 26, "20.09.2022", 3)),
                 Arguments.of("[1459] з 20.09.2022 року на 3+1",
                         new VacationRecord(null, 1459,
-                                null, 26, "20.09.2022", 4)),
+                                null, null, "20.09.2022", 4)),
                 Arguments.of("[1459] 26:Гришко Василь Михайлович з 20 .09.2022 року на 3+1",
                         new VacationRecord("Гришко Василь Михайлович", 1459,
                                 null, 26, "20.09.2022", 4)),
                 Arguments.of("[1459] 26:Гришко Василь Михайлович з 20/09/2022 року на 3+1",
+                        new VacationRecord("Гришко Василь Михайлович", 1459,
+                                null, 26, "20/09/2022", 4)),
+                Arguments.of("[1459a] 26:Гришко Василь Михайлович з 20.09.2022 року на 3+1",
+                        new VacationRecord("Гришко Василь Михайлович", null,
+                                null, 26, "20.09.2022", 4)),
+                Arguments.of("[1459] 26:Гришко Василь Михайлович з 20.09.2022 на 3+1",
+                        new VacationRecord("Гришко Василь Михайлович", 1459,
+                                null, 26, "20.09.2022", 4)),
+                Arguments.of("[1459] 26:Гришко Василь Михайлович з 20.09.2022р на 3+1",
+                        new VacationRecord("Гришко Василь Михайлович", 1459,
+                                null, 26, "20.09.2022", 4)),
+                Arguments.of("[1459] 26:Гришко Василь Михайлович з 20.09.2022р. на 3+1",
+                        new VacationRecord("Гришко Василь Михайлович", 1459,
+                                null, 26, "20.09.2022", 4)),
+                Arguments.of("[1459] 26:Гришко Василь Михайлович з 20.09.2022 р на 3+1",
                         new VacationRecord("Гришко Василь Михайлович", 1459,
                                 null, 26, "20.09.2022", 4))
         );

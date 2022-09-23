@@ -37,6 +37,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.4'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 
 
 }
