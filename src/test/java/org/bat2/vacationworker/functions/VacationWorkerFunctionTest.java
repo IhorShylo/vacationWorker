@@ -88,6 +88,28 @@ public class VacationWorkerFunctionTest {
     }
 
     @ParameterizedTest
+    @ValueSource(strings = {
+            "src/test/resources/req/card/CardDataNullReq.json",
+            "src/test/resources/req/card/CardIdEmptyReq.json",
+            "src/test/resources/req/card/CardIdNullReq.json",
+            "src/test/resources/req/card/CardNameNullReq.json",
+            "src/test/resources/req/card/CardNameEmptyReq.json"
+    })
+    void InvalidCardDataTest(String filePath) throws Exception {
+        final String method = "POST";
+        FileReader requestIn = new FileReader(filePath);
+        BufferedReader readerIn = new BufferedReader(requestIn);
+        when(request.getReader()).thenReturn(readerIn);
+        when(request.getMethod()).thenReturn(method);
+
+        vacationWorkerFunction.service(request, response);
+        writerOut.flush();
+
+        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        assertThat(responseOut.toString()).contains("Invalid request. Card data is corrupted");
+    }
+
+    @ParameterizedTest
     @MethodSource("provideDataForUnsupportedActions")
     void unsupportedTrelloActionTest(String filePath, String type, String translationKey, String listAfterId) throws IOException {
         FileReader requestIn = new FileReader(filePath);

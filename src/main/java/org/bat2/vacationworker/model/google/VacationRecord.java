@@ -1,8 +1,13 @@
 package org.bat2.vacationworker.model.google;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.Value;
 
-@Value
+@Setter
+@Getter
+@AllArgsConstructor
 public class VacationRecord {
     String name;
     Integer vacNumber;
