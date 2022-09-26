@@ -1,4 +1,5 @@
-package org.bat2.vacationworker.model;
+
+package org.bat2.vacationworker.model.trello;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,8 +9,11 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
-public class Display {
+public class TrelloRequest {
 
-    @JsonProperty("translationKey")
-    private String translationKey;
+    @JsonProperty("model")
+    private Model model;
+    @JsonProperty("action")
+    private Action action;
+
 }
