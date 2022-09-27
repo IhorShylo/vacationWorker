@@ -89,6 +89,7 @@ public class VacationWorkerFunction implements HttpFunction {
     }
 
     private Card processRequest(HttpRequest request) throws IOException {
+        logger.info("Encoding: " + request.getCharacterEncoding());
         final BufferedReader reader = request.getReader();
         final String body = reader.lines().collect(Collectors.joining());
         final String method = request.getMethod();
