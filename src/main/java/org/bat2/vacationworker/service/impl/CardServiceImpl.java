@@ -55,9 +55,12 @@ public class CardServiceImpl implements CardService {
     private Integer getDays(String cardName) {
         final int result;
         final String daysRaw = StringUtils.substringAfterLast(cardName, "на");
+        logger.info("Raw days string: '" + daysRaw + "'");
         final String daysWithoutWhitespaces = StringUtils.deleteWhitespace(daysRaw);
+        logger.info("Days without whitespaces string: '" + daysWithoutWhitespaces + "'");
 
         if (StringUtils.containsAny(daysWithoutWhitespaces, "+")) {
+            logger.info("Days without whitespaces contain +. Start splitting...");
             final String[] split = StringUtils.split(daysWithoutWhitespaces, "+");
             return Arrays.stream(split)
                     .map(Integer::valueOf)
@@ -124,21 +127,26 @@ public class CardServiceImpl implements CardService {
     private String getPersonName(String cardName) {
         String nameRaw = null;
         if (StringUtils.contains(cardName, " з") && StringUtils.contains(cardName, ":")) {
+            logger.info("Card name contain ':' & ' з'");
             nameRaw = StringUtils.substringBetween(cardName, ":", " з");
         } else if (StringUtils.contains(cardName, " з") &&
                 !StringUtils.contains(cardName, ":") &&
                 StringUtils.contains(cardName, "]")
         ) {
+            logger.info("Card name contain ']' & ':' & ' з'");
             nameRaw = StringUtils.substringBetween(cardName, "]", " з");
         } else if (StringUtils.contains(cardName, " з") &&
                 !StringUtils.contains(cardName, ":") &&
                 !StringUtils.contains(cardName, "]")
         ) {
+            logger.info("Card name contain only ' з'");
             nameRaw = StringUtils.substringBeforeLast(cardName, " з");
         }
-
+        logger.info("Person name after substring: '" + nameRaw + "'");
 
         final String result = StringUtils.strip(nameRaw);
+
+        logger.info("Person name after strip(): '" + result + "'");
         if (StringUtils.isBlank(result)) {
             logger.warning("Can't parse person name from card: '" + cardName + "'");
             return null;
