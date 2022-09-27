@@ -11,6 +11,7 @@ import org.bat2.vacationworker.ecxeptions.UnsupportedTrelloActionException;
 import org.bat2.vacationworker.model.google.VacationRecord;
 import org.bat2.vacationworker.model.trello.*;
 import org.bat2.vacationworker.service.CardService;
+import org.bat2.vacationworker.service.SecretService;
 import org.bat2.vacationworker.service.VacationService;
 import org.bat2.vacationworker.service.impl.CardServiceImpl;
 import org.bat2.vacationworker.service.impl.GoogleService;
@@ -29,8 +30,10 @@ public class VacationWorkerFunction implements HttpFunction {
     public static final String VALID_ACTION_TYPE = "updateCard";
     public static final String VALID_TRANSLATION_KEY = "action_move_card_from_list_to_list";
 
-    private final VacationService vacationService = new GoogleService();
-    private final CardService cardService = new CardServiceImpl(new TrelloClientImpl(HttpClient.newBuilder().build()));
+    private final SecretService secretService = SecretService.getInstance();
+    private final VacationService vacationService = new GoogleService(secretService.getApiKeyBytes());
+    private final CardService cardService = new CardServiceImpl(
+            new TrelloClientImpl(HttpClient.newBuilder().build(), secretService.getTrelloToken()));
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
@@ -68,6 +71,8 @@ public class VacationWorkerFunction implements HttpFunction {
             writer.write(e.getMessage());
             logger.severe(e.getMessage());
             response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
         }
 
 
