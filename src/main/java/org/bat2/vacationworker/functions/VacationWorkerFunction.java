@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.bat2.vacationworker.client.impl.TrelloClientImpl;
 import org.bat2.vacationworker.ecxeptions.InvalidCardNameException;
 import org.bat2.vacationworker.ecxeptions.UnexpectedRequestException;
@@ -46,7 +47,14 @@ public class VacationWorkerFunction implements HttpFunction {
 
             logger.info("Start card name processing");
             VacationRecord vacationRecord = cardService.parseName(card.getName());
-            logger.info("Card name processing finished successfully. Parsed object: " + vacationRecord.toString());
+            if (StringUtils.isBlank(vacationRecord.getName()) || StringUtils.isBlank(vacationRecord.getStartDate())
+                    || vacationRecord.getDays() == null) {
+                logger.warning("Card name processing finished unsuccessfully. Parsed object: " + vacationRecord);
+                writer.write("Card name processing finished unsuccessfully. Parsed object: " + vacationRecord);
+                response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+                return;
+            }
+            logger.info("Card name processing finished successfully. Parsed object: " + vacationRecord);
 
             logger.info("Start card label processing");
             final String labelName = cardService.getLabelName(card.getId());
@@ -72,7 +80,9 @@ public class VacationWorkerFunction implements HttpFunction {
             logger.severe(e.getMessage());
             response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
         } catch (Exception e) {
+            writer.write(e.getMessage());
             logger.severe(e.getMessage());
+            response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR);
         }
 
 
@@ -82,6 +92,7 @@ public class VacationWorkerFunction implements HttpFunction {
         final BufferedReader reader = request.getReader();
         final String body = reader.lines().collect(Collectors.joining());
         final String method = request.getMethod();
+        logger.info("Processed body: " + body);
 
         if (!"POST".equals(method) || body.isEmpty()) {
             throw new UnexpectedRequestException("Invalid request. Request method: " + method + "; Request body: " + body);
