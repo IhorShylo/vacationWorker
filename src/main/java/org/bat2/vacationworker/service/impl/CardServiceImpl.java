@@ -65,7 +65,7 @@ public class CardServiceImpl implements CardService {
         decodeAndPrint(cyrillicStr, "UTF-8");
         decodeAndPrint(cyrillicStr, "x-MacUkraine");
         System.out.println("------Try to substring with ownMethod decode--------");
-        final String daysRaw = StringUtils.substringAfterLast(cardName, decodedWithOwnMethod);
+        final String daysRaw = StringUtils.substringAfterLast(cardName, cyrillicStr);
         logger.info("Raw days string: '" + daysRaw + "'");
         final String daysWithoutWhitespaces = StringUtils.deleteWhitespace(daysRaw);
         logger.info("Days without whitespaces string: '" + daysWithoutWhitespaces + "'");

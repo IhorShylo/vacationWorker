@@ -57,6 +57,12 @@ test {
     useJUnitPlatform()
 }
 
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 // Register a "runFunction" task to run the function locally
 tasks.register("runFunction", JavaExec) {
     main = 'com.google.cloud.functions.invoker.runner.Invoker'
