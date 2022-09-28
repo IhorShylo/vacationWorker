@@ -55,17 +55,8 @@ public class CardServiceImpl implements CardService {
     }
 
     private Integer getDays(String cardName) {
-        printChars(cardName);
         final int result;
-        System.out.println("-----Print decoded with own method-------");
-        final String cyrillicStr = "на";
-        final String decodedWithOwnMethod = decodeText(cyrillicStr, "Cp1252");
-        printChars(decodedWithOwnMethod);
-        decodeAndPrint(cyrillicStr, "Cp1252");
-        decodeAndPrint(cyrillicStr, "UTF-8");
-        decodeAndPrint(cyrillicStr, "x-MacUkraine");
-        System.out.println("------Try to substring with ownMethod decode--------");
-        final String daysRaw = StringUtils.substringAfterLast(cardName, cyrillicStr);
+        final String daysRaw = StringUtils.substringAfterLast(cardName, "на");
         logger.info("Raw days string: '" + daysRaw + "'");
         final String daysWithoutWhitespaces = StringUtils.deleteWhitespace(daysRaw);
         logger.info("Days without whitespaces string: '" + daysWithoutWhitespaces + "'");
@@ -86,40 +77,6 @@ public class CardServiceImpl implements CardService {
         }
 
         return result;
-    }
-
-    private static void decodeAndPrint(String cyrillicStr, String encoding) {
-        String decodedWithStringConstructor;
-        try {
-            decodedWithStringConstructor = new String(cyrillicStr.getBytes(encoding), encoding);
-        } catch (UnsupportedEncodingException e) {
-            logger.warning("Error during constructor decoding. Encoding been used: " + encoding);
-            decodedWithStringConstructor = cyrillicStr;
-        }
-        System.out.println("-----Print decoded with constructor. Encoding: " + encoding + " .-------");
-        printChars(decodedWithStringConstructor);
-    }
-
-    private String decodeText(String input, String encoding) {
-        try {
-            return
-                    new BufferedReader(
-                            new InputStreamReader(
-                                    new ByteArrayInputStream(input.getBytes()),
-                                    Charset.forName(encoding)))
-                            .readLine();
-        } catch (IOException e) {
-            System.out.println("Can't decode '" + input + "' to " + encoding);
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void printChars(String cardName) {
-        char[] ch = cardName.toCharArray();
-        for (int i = 0; i < ch.length; i++) {
-            int code = ch[i];
-            System.out.println("char at " + i + " index is: " + ch[i] + " with code: " + code);
-        }
     }
 
     private String getStartDate(String cardName) {

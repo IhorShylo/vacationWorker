@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.http.HttpClient;
-import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class VacationWorkerFunction implements HttpFunction {
     private static final Logger logger = Logger.getLogger(VacationWorkerFunction.class.getName());
@@ -90,10 +90,9 @@ public class VacationWorkerFunction implements HttpFunction {
     }
 
     private Card processRequest(HttpRequest request) throws IOException {
-        logger.info("Encoding: " + request.getCharacterEncoding());
         final BufferedReader reader = request.getReader();
-//        final String body = reader.lines().collect(Collectors.joining());
-        final String body = StringUtils.toEncodedString(readerToBytes(reader), StandardCharsets.UTF_8);
+        final String body = reader.lines().collect(Collectors.joining());
+//        final String body = StringUtils.toEncodedString(readerToBytes(reader), StandardCharsets.UTF_8);
         final String method = request.getMethod();
         logger.info("Processed body: " + body);
 
