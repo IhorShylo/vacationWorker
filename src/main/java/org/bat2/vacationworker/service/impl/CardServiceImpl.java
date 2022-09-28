@@ -53,8 +53,12 @@ public class CardServiceImpl implements CardService {
     }
 
     private Integer getDays(String cardName) {
+        printChars(cardName);
         final int result;
-        final String daysRaw = StringUtils.substringAfterLast(cardName, "на");
+        final String separator = "на";
+        System.out.println("----------------------");
+        printChars(separator);
+        final String daysRaw = StringUtils.substringAfterLast(cardName, separator);
         logger.info("Raw days string: '" + daysRaw + "'");
         final String daysWithoutWhitespaces = StringUtils.deleteWhitespace(daysRaw);
         logger.info("Days without whitespaces string: '" + daysWithoutWhitespaces + "'");
@@ -75,6 +79,14 @@ public class CardServiceImpl implements CardService {
         }
 
         return result;
+    }
+
+    private static void printChars(String cardName) {
+        char[] ch = cardName.toCharArray();
+        for (int i = 0; i < ch.length; i++) {
+            int code = ch[i];
+            System.out.println("char at " + i + " index is: " + ch[i] + " with code: " + code);
+        }
     }
 
     private String getStartDate(String cardName) {
