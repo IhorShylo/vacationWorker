@@ -9,6 +9,11 @@ import org.bat2.vacationworker.model.trello.Card;
 import org.bat2.vacationworker.model.trello.Label;
 import org.bat2.vacationworker.service.CardService;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -55,7 +60,7 @@ public class CardServiceImpl implements CardService {
     private Integer getDays(String cardName) {
         printChars(cardName);
         final int result;
-        final String separator = "на";
+        final String separator = decodeText("на", "UTF-8");
         System.out.println("----------------------");
         printChars(separator);
         final String daysRaw = StringUtils.substringAfterLast(cardName, separator);
@@ -79,6 +84,20 @@ public class CardServiceImpl implements CardService {
         }
 
         return result;
+    }
+
+    private String decodeText(String input, String encoding) {
+        try {
+            return
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    new ByteArrayInputStream(input.getBytes()),
+                                    Charset.forName(encoding)))
+                            .readLine();
+        } catch (IOException e) {
+            System.out.println("Can't decode '" + input + "' to " + encoding);
+            throw new RuntimeException(e);
+        }
     }
 
     private static void printChars(String cardName) {
