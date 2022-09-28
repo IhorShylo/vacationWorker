@@ -9,10 +9,7 @@ import org.bat2.vacationworker.model.trello.Card;
 import org.bat2.vacationworker.model.trello.Label;
 import org.bat2.vacationworker.service.CardService;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -60,10 +57,21 @@ public class CardServiceImpl implements CardService {
     private Integer getDays(String cardName) {
         printChars(cardName);
         final int result;
-        final String separator = decodeText("на", "UTF-8");
-        System.out.println("----------------------");
-        printChars(separator);
-        final String daysRaw = StringUtils.substringAfterLast(cardName, separator);
+        System.out.println("-----Print decoded with own method-------");
+        final String cyrillicStr = "на";
+        final String decodedWithOwnMethod = decodeText(cyrillicStr, "Cp1252");
+        printChars(decodedWithOwnMethod);
+        String decodedWithStringConstructor;
+        try {
+            decodedWithStringConstructor = new String(cyrillicStr.getBytes("Cp1252"), "Cp1251");
+        } catch (UnsupportedEncodingException e) {
+            logger.warning("Error during constructor decoding");
+            decodedWithStringConstructor = cyrillicStr;
+        }
+        System.out.println("-----Print decoded with constructor-------");
+        printChars(decodedWithStringConstructor);
+        System.out.println("------Try to substring with ownMethod decode--------");
+        final String daysRaw = StringUtils.substringAfterLast(cardName, decodedWithOwnMethod);
         logger.info("Raw days string: '" + daysRaw + "'");
         final String daysWithoutWhitespaces = StringUtils.deleteWhitespace(daysRaw);
         logger.info("Days without whitespaces string: '" + daysWithoutWhitespaces + "'");
