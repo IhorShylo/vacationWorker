@@ -61,15 +61,9 @@ public class CardServiceImpl implements CardService {
         final String cyrillicStr = "на";
         final String decodedWithOwnMethod = decodeText(cyrillicStr, "Cp1252");
         printChars(decodedWithOwnMethod);
-        String decodedWithStringConstructor;
-        try {
-            decodedWithStringConstructor = new String(cyrillicStr.getBytes("Cp1252"), "Cp1251");
-        } catch (UnsupportedEncodingException e) {
-            logger.warning("Error during constructor decoding");
-            decodedWithStringConstructor = cyrillicStr;
-        }
-        System.out.println("-----Print decoded with constructor-------");
-        printChars(decodedWithStringConstructor);
+        decodeAndPrint(cyrillicStr, "Cp1252");
+        decodeAndPrint(cyrillicStr, "UTF-8");
+        decodeAndPrint(cyrillicStr, "x-MacUkraine");
         System.out.println("------Try to substring with ownMethod decode--------");
         final String daysRaw = StringUtils.substringAfterLast(cardName, decodedWithOwnMethod);
         logger.info("Raw days string: '" + daysRaw + "'");
@@ -92,6 +86,18 @@ public class CardServiceImpl implements CardService {
         }
 
         return result;
+    }
+
+    private static void decodeAndPrint(String cyrillicStr, String encoding) {
+        String decodedWithStringConstructor;
+        try {
+            decodedWithStringConstructor = new String(cyrillicStr.getBytes(encoding), encoding);
+        } catch (UnsupportedEncodingException e) {
+            logger.warning("Error during constructor decoding. Encoding been used: " + encoding);
+            decodedWithStringConstructor = cyrillicStr;
+        }
+        System.out.println("-----Print decoded with constructor. Encoding: " + encoding + " .-------");
+        printChars(decodedWithStringConstructor);
     }
 
     private String decodeText(String input, String encoding) {
