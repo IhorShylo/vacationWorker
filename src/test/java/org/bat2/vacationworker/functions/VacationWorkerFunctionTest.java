@@ -3,6 +3,7 @@ package org.bat2.vacationworker.functions;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,6 +41,7 @@ public class VacationWorkerFunctionTest {
     }
 
     @Test
+    @Disabled
     void successFunctionExecutionTest() throws Exception {
         FileReader requestIn = new FileReader("src/test/resources/req/moveCardToTargetListReq.json");
         BufferedReader readerIn = new BufferedReader(requestIn);
@@ -56,6 +58,7 @@ public class VacationWorkerFunctionTest {
     }
 
     @ParameterizedTest
+    @Disabled
     @ValueSource(strings = {"GET", "DELETE", "PUT", "HEAD", "OPTIONS", "InvalidString"})
     void unsupportedMethodRequestTest(String method) throws Exception {
         FileReader requestIn = new FileReader("src/test/resources/req/moveCardToTargetListReq.json");
@@ -72,6 +75,7 @@ public class VacationWorkerFunctionTest {
     }
 
     @Test
+    @Disabled
     void emptyRequestBodyTest() throws Exception {
         final String method = "POST";
         final String body = "";
@@ -88,6 +92,7 @@ public class VacationWorkerFunctionTest {
     }
 
     @ParameterizedTest
+    @Disabled
     @ValueSource(strings = {
             "src/test/resources/req/card/CardDataNullReq.json",
             "src/test/resources/req/card/CardIdEmptyReq.json",
@@ -110,6 +115,7 @@ public class VacationWorkerFunctionTest {
     }
 
     @ParameterizedTest
+    @Disabled
     @MethodSource("provideDataForUnsupportedActions")
     void unsupportedTrelloActionTest(String filePath, String type, String translationKey, String listAfterId) throws IOException {
         FileReader requestIn = new FileReader(filePath);

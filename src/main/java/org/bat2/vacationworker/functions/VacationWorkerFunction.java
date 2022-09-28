@@ -20,10 +20,11 @@ import org.bat2.vacationworker.service.impl.GoogleService;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.http.HttpClient;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class VacationWorkerFunction implements HttpFunction {
     private static final Logger logger = Logger.getLogger(VacationWorkerFunction.class.getName());
@@ -91,7 +92,8 @@ public class VacationWorkerFunction implements HttpFunction {
     private Card processRequest(HttpRequest request) throws IOException {
         logger.info("Encoding: " + request.getCharacterEncoding());
         final BufferedReader reader = request.getReader();
-        final String body = reader.lines().collect(Collectors.joining());
+//        final String body = reader.lines().collect(Collectors.joining());
+        final String body = StringUtils.toEncodedString(readerToBytes(reader), StandardCharsets.UTF_8);
         final String method = request.getMethod();
         logger.info("Processed body: " + body);
 
@@ -141,5 +143,17 @@ public class VacationWorkerFunction implements HttpFunction {
         return card;
     }
 
+    private byte[] readerToBytes(Reader initialReader)
+            throws IOException {
 
+        char[] charArray = new char[8 * 1024];
+        StringBuilder builder = new StringBuilder();
+        int numCharsRead;
+        while ((numCharsRead = initialReader.read(charArray, 0, charArray.length)) != -1) {
+            builder.append(charArray, 0, numCharsRead);
+        }
+
+        initialReader.close();
+        return builder.toString().getBytes();
+    }
 }
