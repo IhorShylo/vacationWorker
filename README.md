@@ -11,6 +11,8 @@ The Rest api is inspired by https://help.sonatype.com/iqserver/automating/rest-a
 
 Install Google Cloud SDK as in guide at https://cloud.google.com/sdk/docs/install
 
+## gradle
+
 Run the following command to confirm that your function builds:
 
 ```
@@ -27,6 +29,23 @@ To run in debug mode, run the following command:
 
 ```
 ./gradlew runFunction -Prun.functionTarget=org.bat2.vacationworker.functions.VacationWorkerFunction --debug-jvm
+```
+
+## maven
+
+Run the following command to confirm that your function builds:
+
+```
+mvn compile
+```
+
+Another option is to use the mvn package command to compile your Java code, run any tests, and package the code up in a
+JAR file within the target directory. You can learn more about the Maven build lifecycle here.
+
+To test the function, run the following command:
+
+```
+mvn function:run
 ```
 
 If testing completes successfully, it displays the URL you can visit in your web browser to see the function in

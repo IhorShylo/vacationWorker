@@ -18,7 +18,7 @@ import java.net.HttpURLConnection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,7 +54,7 @@ public class VacationWorkerFunctionTest {
 
 
         verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_OK);
-        assertThat(responseOut.toString()).contains("Card: " + cardName + " saved successfully");
+        assertTrue(responseOut.toString().contains("Card: " + cardName + " saved successfully"));
     }
 
     @ParameterizedTest
@@ -71,7 +71,7 @@ public class VacationWorkerFunctionTest {
         final String body = request.getReader().lines().collect(Collectors.joining());
 
         verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
-        assertThat(responseOut.toString()).contains("Invalid request. Request method: " + method + "; Request body: " + body);
+        assertTrue(responseOut.toString().contains("Invalid request. Request method: " + method + "; Request body: " + body));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class VacationWorkerFunctionTest {
         writerOut.flush();
 
         verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
-        assertThat(responseOut.toString()).contains("Invalid request. Request method: " + method + "; Request body: " + body);
+        assertTrue(responseOut.toString().contains("Invalid request. Request method: " + method + "; Request body: " + body));
     }
 
     @ParameterizedTest
@@ -111,7 +111,7 @@ public class VacationWorkerFunctionTest {
         writerOut.flush();
 
         verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
-        assertThat(responseOut.toString()).contains("Invalid request. Card data is corrupted");
+        assertTrue(responseOut.toString().contains("Invalid request. Card data is corrupted"));
     }
 
     @ParameterizedTest
@@ -128,8 +128,8 @@ public class VacationWorkerFunctionTest {
         writerOut.flush();
 
         verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_UNSUPPORTED_TYPE);
-        assertThat(responseOut.toString()).contains("Unsupported trello action. Processing ignored. Action type: " + type +
-                ", translation key: " + translationKey + ", listAfterId: " + listAfterId);
+        assertTrue(responseOut.toString().contains("Unsupported trello action. Processing ignored. Action type: " + type +
+                ", translation key: " + translationKey + ", listAfterId: " + listAfterId));
 
     }
 
