@@ -20,9 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,7 +48,7 @@ class CardServiceImplTest {
         Card card = new Card(listId, cardId, cardName, labels);
         when(trelloClient.getCardById(cardId)).thenReturn(card);
 
-        assertThat(cardService.getLabelName(cardId)).isEqualTo(labelName);
+        assertEquals(cardService.getLabelName(cardId), labelName);
     }
 
     @Test
@@ -62,7 +60,8 @@ class CardServiceImplTest {
         Card card = new Card(listId, cardId, cardName, Collections.emptyList());
         when(trelloClient.getCardById(cardId)).thenReturn(card);
 
-        assertThat(cardService.getLabelName(cardId)).isEmpty();
+        assertTrue(cardService.getLabelName(cardId).isEmpty());
+
     }
 
     @Test
@@ -70,7 +69,7 @@ class CardServiceImplTest {
         final String cardId = "cardId";
         when(trelloClient.getCardById(cardId)).thenThrow(new RuntimeException());
 
-        assertThat(cardService.getLabelName(cardId)).isEmpty();
+        assertTrue(cardService.getLabelName(cardId).isEmpty());
     }
 
     @ParameterizedTest
