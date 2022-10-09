@@ -8,10 +8,18 @@
     <artifactId>vacationWorker</artifactId>
     <version>1.1</version>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-cloud-function.version>3.2.7</spring-cloud-function.version>
     </properties>
 
     <dependencyManagement>
@@ -27,12 +35,11 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Required for Function primitives -->
+        <!--Spring cloud function-->
         <dependency>
-            <groupId>com.google.cloud.functions</groupId>
-            <artifactId>functions-framework-api</artifactId>
-            <version>1.0.4</version>
-            <scope>provided</scope>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-function-adapter-gcp</artifactId>
+            <version>${spring-cloud-function.version}</version>
         </dependency>
 
         <!-- google client interaction -->
@@ -101,29 +108,106 @@
             <version>3.12.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.cloud.functions.invoker</groupId>
+            <artifactId>java-function-invoker</artifactId>
+            <version>1.0.0-alpha-2-rc5</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <!--
-                  Google Cloud Functions Framework Maven plugin
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>target/deploy</outputDirectory>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-function-adapter-gcp</artifactId>
+                        <version>${spring-cloud-function.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
 
-                  This plugin allows you to run Cloud Functions Java code
-                  locally. Use the following terminal command to run a
-                  given function locally:
-
-                  mvn function:run -Drun.functionTarget=your.package.yourFunction
-                -->
+            <plugin>
                 <groupId>com.google.cloud.functions</groupId>
                 <artifactId>function-maven-plugin</artifactId>
                 <version>0.10.1</version>
                 <configuration>
-                    <functionTarget>org.bat2.vacationworker.functions.VacationWorkerFunction</functionTarget>
+                    <functionTarget>org.springframework.cloud.function.adapter.gcp.GcfJarLauncher</functionTarget>
+                    <port>8080</port>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/libs-snapshot-local</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/libs-snapshot-local</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
