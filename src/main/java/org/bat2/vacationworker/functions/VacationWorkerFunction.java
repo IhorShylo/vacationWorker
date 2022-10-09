@@ -1,7 +1,12 @@
 package org.bat2.vacationworker.functions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.functions.HttpFunction;
+import com.google.cloud.functions.HttpRequest;
+import com.google.cloud.functions.HttpResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.bat2.vacationworker.client.impl.TrelloClientImpl;
+import org.bat2.vacationworker.ecxeptions.InvalidCardNameException;
 import org.bat2.vacationworker.ecxeptions.UnexpectedRequestException;
 import org.bat2.vacationworker.ecxeptions.UnsupportedTrelloActionException;
 import org.bat2.vacationworker.model.google.VacationRecord;
@@ -12,11 +17,16 @@ import org.bat2.vacationworker.service.VacationService;
 import org.bat2.vacationworker.service.impl.CardServiceImpl;
 import org.bat2.vacationworker.service.impl.GoogleService;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.http.HttpClient;
-import java.util.function.Consumer;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-public class VacationWorkerFunction implements Consumer<TrelloRequest> {
+public class VacationWorkerFunction implements HttpFunction {
     private static final Logger logger = Logger.getLogger(VacationWorkerFunction.class.getName());
     public static final String TARGET_LIST_ID = "62f227668555a62731adef73";
     public static final String VALID_ACTION_TYPE = "updateCard";
@@ -27,20 +37,22 @@ public class VacationWorkerFunction implements Consumer<TrelloRequest> {
     private final CardService cardService = new CardServiceImpl(
             new TrelloClientImpl(HttpClient.newBuilder().build(), secretService.getTrelloToken()));
 
-
     @Override
-    public void accept(TrelloRequest request) {
-        logger.info("Start function execution");
+    public void service(HttpRequest request, HttpResponse response) throws IOException {
+
+        BufferedWriter writer = response.getWriter();
         try {
-            logger.info("Start request body processing");
-            final Card card = processRequestBody(request);
-            logger.info("Request body processed successfully");
+            logger.info("Start request processing");
+            final Card card = processRequest(request);
+            logger.info("Request processed successfully");
 
             logger.info("Start card name processing");
             VacationRecord vacationRecord = cardService.parseName(card.getName());
             if (StringUtils.isBlank(vacationRecord.getName()) || StringUtils.isBlank(vacationRecord.getStartDate())
                     || vacationRecord.getDays() == null) {
                 logger.warning("Card name processing finished unsuccessfully. Parsed object: " + vacationRecord);
+                writer.write("Card name processing finished unsuccessfully. Parsed object: " + vacationRecord);
+                response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
                 return;
             }
             logger.info("Card name processing finished successfully. Parsed object: " + vacationRecord);
@@ -54,17 +66,44 @@ public class VacationWorkerFunction implements Consumer<TrelloRequest> {
             logger.info("Start vacation record saving");
             vacationService.saveVacation(vacationRecord);
             logger.info("Vacation record saved successfully");
+            writer.write("Card: " + card.getName() + " saved successfully");
+            response.setStatusCode(HttpURLConnection.HTTP_OK);
         } catch (UnexpectedRequestException e) {
+            writer.write(e.getMessage());
             logger.warning(e.getMessage());
+            response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
         } catch (UnsupportedTrelloActionException e) {
+            writer.write(e.getMessage());
             logger.info(e.getMessage());
-        } catch (Exception e) {
+            response.setStatusCode(HttpURLConnection.HTTP_UNSUPPORTED_TYPE);
+        } catch (InvalidCardNameException e) {
+            writer.write(e.getMessage());
             logger.severe(e.getMessage());
+            response.setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        } catch (Exception e) {
+            writer.write(e.getMessage());
+            logger.severe(e.getMessage());
+            response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR);
         }
+
+
     }
 
-    private Card processRequestBody(TrelloRequest request) {
-        final Action action = request.getAction();
+    private Card processRequest(HttpRequest request) throws IOException {
+        final BufferedReader reader = request.getReader();
+        final String body = reader.lines().collect(Collectors.joining());
+//        final String body = StringUtils.toEncodedString(readerToBytes(reader), StandardCharsets.UTF_8);
+        final String method = request.getMethod();
+        logger.info("Processed body: " + body);
+
+        if (!"POST".equals(method) || body.isEmpty()) {
+            throw new UnexpectedRequestException("Invalid request. Request method: " + method + "; Request body: " + body);
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        final TrelloRequest reqModel = mapper.readValue(body, TrelloRequest.class);
+        final Action action = reqModel.getAction();
         String type = null;
         String translationKey = null;
         String listAfterId = null;
@@ -103,4 +142,17 @@ public class VacationWorkerFunction implements Consumer<TrelloRequest> {
         return card;
     }
 
+    private byte[] readerToBytes(Reader initialReader)
+            throws IOException {
+
+        char[] charArray = new char[8 * 1024];
+        StringBuilder builder = new StringBuilder();
+        int numCharsRead;
+        while ((numCharsRead = initialReader.read(charArray, 0, charArray.length)) != -1) {
+            builder.append(charArray, 0, numCharsRead);
+        }
+
+        initialReader.close();
+        return builder.toString().getBytes();
+    }
 }

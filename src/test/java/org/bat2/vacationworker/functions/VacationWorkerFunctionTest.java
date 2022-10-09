@@ -40,98 +40,98 @@ public class VacationWorkerFunctionTest {
         when(response.getWriter()).thenReturn(writerOut);
     }
 
-//    @Test
-//    @Disabled
-//    void successFunctionExecutionTest() throws Exception {
-//        FileReader requestIn = new FileReader("src/test/resources/req/moveCardToTargetListReq.json");
-//        BufferedReader readerIn = new BufferedReader(requestIn);
-//        when(request.getReader()).thenReturn(readerIn);
-//        when(request.getMethod()).thenReturn("POST");
-//
-//        vacationWorkerFunction.service(request, response);
-//        writerOut.flush();
-//        String cardName = "[1459] 26: Гришко Василь Михайлович з 20.09.2022 року на 3+1";
-//
-//
-//        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_OK);
-//        assertTrue(responseOut.toString().contains("Card: " + cardName + " saved successfully"));
-//    }
-//
-//    @ParameterizedTest
-//    @Disabled
-//    @ValueSource(strings = {"GET", "DELETE", "PUT", "HEAD", "OPTIONS", "InvalidString"})
-//    void unsupportedMethodRequestTest(String method) throws Exception {
-//        FileReader requestIn = new FileReader("src/test/resources/req/moveCardToTargetListReq.json");
-//        BufferedReader readerIn = new BufferedReader(requestIn);
-//        when(request.getReader()).thenReturn(readerIn);
-//        when(request.getMethod()).thenReturn(method);
-//
-//        vacationWorkerFunction.service(request, response);
-//        writerOut.flush();
-//        final String body = request.getReader().lines().collect(Collectors.joining());
-//
-//        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
-//        assertTrue(responseOut.toString().contains("Invalid request. Request method: " + method + "; Request body: " + body));
-//    }
-//
-//    @Test
-//    @Disabled
-//    void emptyRequestBodyTest() throws Exception {
-//        final String method = "POST";
-//        final String body = "";
-//        StringReader requestIn = new StringReader(body);
-//        BufferedReader readerIn = new BufferedReader(requestIn);
-//        when(request.getReader()).thenReturn(readerIn);
-//        when(request.getMethod()).thenReturn(method);
-//
-//        vacationWorkerFunction.service(request, response);
-//        writerOut.flush();
-//
-//        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
-//        assertTrue(responseOut.toString().contains("Invalid request. Request method: " + method + "; Request body: " + body));
-//    }
-//
-//    @ParameterizedTest
-//    @Disabled
-//    @ValueSource(strings = {
-//            "src/test/resources/req/card/CardDataNullReq.json",
-//            "src/test/resources/req/card/CardIdEmptyReq.json",
-//            "src/test/resources/req/card/CardIdNullReq.json",
-//            "src/test/resources/req/card/CardNameNullReq.json",
-//            "src/test/resources/req/card/CardNameEmptyReq.json"
-//    })
-//    void InvalidCardDataTest(String filePath) throws Exception {
-//        final String method = "POST";
-//        FileReader requestIn = new FileReader(filePath);
-//        BufferedReader readerIn = new BufferedReader(requestIn);
-//        when(request.getReader()).thenReturn(readerIn);
-//        when(request.getMethod()).thenReturn(method);
-//
-//        vacationWorkerFunction.service(request, response);
-//        writerOut.flush();
-//
-//        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
-//        assertTrue(responseOut.toString().contains("Invalid request. Card data is corrupted"));
-//    }
-//
-//    @ParameterizedTest
-//    @Disabled
-//    @MethodSource("provideDataForUnsupportedActions")
-//    void unsupportedTrelloActionTest(String filePath, String type, String translationKey, String listAfterId) throws IOException {
-//        FileReader requestIn = new FileReader(filePath);
-//        BufferedReader readerIn = new BufferedReader(requestIn);
-//        when(request.getReader()).thenReturn(readerIn);
-//        final String method = "POST";
-//        when(request.getMethod()).thenReturn(method);
-//
-//        vacationWorkerFunction.service(request, response);
-//        writerOut.flush();
-//
-//        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_UNSUPPORTED_TYPE);
-//        assertTrue(responseOut.toString().contains("Unsupported trello action. Processing ignored. Action type: " + type +
-//                ", translation key: " + translationKey + ", listAfterId: " + listAfterId));
-//
-//    }
+    @Test
+    @Disabled
+    void successFunctionExecutionTest() throws Exception {
+        FileReader requestIn = new FileReader("src/test/resources/req/moveCardToTargetListReq.json");
+        BufferedReader readerIn = new BufferedReader(requestIn);
+        when(request.getReader()).thenReturn(readerIn);
+        when(request.getMethod()).thenReturn("POST");
+
+        vacationWorkerFunction.service(request, response);
+        writerOut.flush();
+        String cardName = "[1459] 26: Гришко Василь Михайлович з 20.09.2022 року на 3+1";
+
+
+        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_OK);
+        assertTrue(responseOut.toString().contains("Card: " + cardName + " saved successfully"));
+    }
+
+    @ParameterizedTest
+    @Disabled
+    @ValueSource(strings = {"GET", "DELETE", "PUT", "HEAD", "OPTIONS", "InvalidString"})
+    void unsupportedMethodRequestTest(String method) throws Exception {
+        FileReader requestIn = new FileReader("src/test/resources/req/moveCardToTargetListReq.json");
+        BufferedReader readerIn = new BufferedReader(requestIn);
+        when(request.getReader()).thenReturn(readerIn);
+        when(request.getMethod()).thenReturn(method);
+
+        vacationWorkerFunction.service(request, response);
+        writerOut.flush();
+        final String body = request.getReader().lines().collect(Collectors.joining());
+
+        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        assertTrue(responseOut.toString().contains("Invalid request. Request method: " + method + "; Request body: " + body));
+    }
+
+    @Test
+    @Disabled
+    void emptyRequestBodyTest() throws Exception {
+        final String method = "POST";
+        final String body = "";
+        StringReader requestIn = new StringReader(body);
+        BufferedReader readerIn = new BufferedReader(requestIn);
+        when(request.getReader()).thenReturn(readerIn);
+        when(request.getMethod()).thenReturn(method);
+
+        vacationWorkerFunction.service(request, response);
+        writerOut.flush();
+
+        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        assertTrue(responseOut.toString().contains("Invalid request. Request method: " + method + "; Request body: " + body));
+    }
+
+    @ParameterizedTest
+    @Disabled
+    @ValueSource(strings = {
+            "src/test/resources/req/card/CardDataNullReq.json",
+            "src/test/resources/req/card/CardIdEmptyReq.json",
+            "src/test/resources/req/card/CardIdNullReq.json",
+            "src/test/resources/req/card/CardNameNullReq.json",
+            "src/test/resources/req/card/CardNameEmptyReq.json"
+    })
+    void InvalidCardDataTest(String filePath) throws Exception {
+        final String method = "POST";
+        FileReader requestIn = new FileReader(filePath);
+        BufferedReader readerIn = new BufferedReader(requestIn);
+        when(request.getReader()).thenReturn(readerIn);
+        when(request.getMethod()).thenReturn(method);
+
+        vacationWorkerFunction.service(request, response);
+        writerOut.flush();
+
+        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_BAD_REQUEST);
+        assertTrue(responseOut.toString().contains("Invalid request. Card data is corrupted"));
+    }
+
+    @ParameterizedTest
+    @Disabled
+    @MethodSource("provideDataForUnsupportedActions")
+    void unsupportedTrelloActionTest(String filePath, String type, String translationKey, String listAfterId) throws IOException {
+        FileReader requestIn = new FileReader(filePath);
+        BufferedReader readerIn = new BufferedReader(requestIn);
+        when(request.getReader()).thenReturn(readerIn);
+        final String method = "POST";
+        when(request.getMethod()).thenReturn(method);
+
+        vacationWorkerFunction.service(request, response);
+        writerOut.flush();
+
+        verify(response, times(1)).setStatusCode(HttpURLConnection.HTTP_UNSUPPORTED_TYPE);
+        assertTrue(responseOut.toString().contains("Unsupported trello action. Processing ignored. Action type: " + type +
+                ", translation key: " + translationKey + ", listAfterId: " + listAfterId));
+
+    }
 
     private static Stream<Arguments> provideDataForUnsupportedActions() {
         return Stream.of(
