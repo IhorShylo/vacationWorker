@@ -11,11 +11,13 @@ import org.bat2.vacationworker.service.SecretService;
 import org.bat2.vacationworker.service.VacationService;
 import org.bat2.vacationworker.service.impl.CardServiceImpl;
 import org.bat2.vacationworker.service.impl.GoogleService;
+import org.springframework.stereotype.Component;
 
 import java.net.http.HttpClient;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
+@Component
 public class VacationWorkerFunction implements Consumer<TrelloRequest> {
     private static final Logger logger = Logger.getLogger(VacationWorkerFunction.class.getName());
     public static final String TARGET_LIST_ID = "62f227668555a62731adef73";
