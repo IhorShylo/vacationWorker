@@ -5,9 +5,9 @@ steps:
       - functions
       - deploy
       - vacation-worker-function
-      - --entry-point=org.bat2.vacationworker.functions.VacationWorkerFunction
+      - --entry-point=org.springframework.cloud.function.adapter.gcp.GcfJarLauncher
       - --region=europe-west3
-      - --source=.
+      - --source=target/deploy
       - --trigger-http
       - --runtime=java17
       - --memory=512MB
