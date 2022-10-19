@@ -48,14 +48,10 @@ To test the function, run the following command:
 mvn function:run
 ```
 
-If testing completes successfully, it displays the URL you can visit in your web browser to see the function in
-action: http://localhost:8080/. You should see a Hello World! message.
-
-Alternatively, you can send requests to this function using curl from another terminal window: (commands are escaped for
-windows)
+To test vacation worker function run bash script
 
 ```
-curl -i localhost:8080
+src/test/resources/localTest.sh
 
 ```
 
