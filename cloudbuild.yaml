@@ -1,4 +1,9 @@
 steps:
+#  Package
+  - name: 'maven'
+    entrypoint: 'mvn'
+    args: [ 'package' ]
+  #  Deploy
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       - gcloud

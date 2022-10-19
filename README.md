@@ -64,7 +64,7 @@ To deploy the function with an HTTP trigger, run the following command in the he
 ```
 gcloud auth login
 gcloud config set project vacation-worker-project
-gcloud functions deploy vacation-worker-function-manual --region europe-west3  --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher --runtime java17 --trigger-http --source target/deploy --memory 512MB --allow-unauthenticated --timeout 90 --min-instances 0 --max-instances 1 --service-account vacation-worker-function@vacation-worker-project.iam.gserviceaccount.com
+gcloud functions deploy vacation-worker-function --region europe-west3  --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher --runtime java17 --trigger-http --source target/deploy --memory 512MB --allow-unauthenticated --timeout 90 --min-instances 0 --max-instances 1 --service-account vacation-worker-function@vacation-worker-project.iam.gserviceaccount.com
 ```
 
 where user-function-manual is the registered name by which your function will be identified in the console, and
