@@ -1,9 +1,5 @@
 steps:
-  #  Check wrapped mvn version
-  - name: 'maven'
-    args: [ './mvnw', '-version' ]
-    id: CHECK WRAPPED MVN VERSION
     #  Build
   - name: 'maven'
     args: [ './mvnw', 'package' ]
-    id: BUILD
+    id: Build
