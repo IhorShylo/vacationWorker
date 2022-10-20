@@ -16,7 +16,7 @@ Install Google Cloud SDK as in guide at https://cloud.google.com/sdk/docs/instal
 Run the following command to confirm that your function builds:
 
 ```
-gradlew build
+./gradlew build
 ```
 
 To test the function, run the following command:
@@ -36,7 +36,7 @@ To run in debug mode, run the following command:
 Run the following command to confirm that your function builds:
 
 ```
-mvn compile
+./mvnw compile
 ```
 
 Another option is to use the mvn package command to compile your Java code, run any tests, and package the code up in a
@@ -45,7 +45,7 @@ JAR file within the target directory. You can learn more about the Maven build l
 To test the function, run the following command:
 
 ```
-mvn function:run
+./mvnw function:run
 ```
 
 To test vacation worker function run bash script

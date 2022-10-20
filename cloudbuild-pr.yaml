@@ -1,6 +1,5 @@
 steps:
-  #  Build
+    #  Build
   - name: 'maven'
-    entrypoint: 'mvn'
-    args: [ 'package' ]
-    id: BUILD
+    args: [ './mvnw', 'package' ]
+    id: Build
