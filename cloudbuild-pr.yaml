@@ -1,5 +1,9 @@
 steps:
-  #  Build
-  - name: 'ubuntu'
+  #  Check wrapped mvn version
+  - name: 'maven'
+    args: [ './mvnw', '-version' ]
+    id: BUILD
+    #  Build
+  - name: 'maven'
     args: [ './mvnw', 'package' ]
     id: BUILD
