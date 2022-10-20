@@ -1,6 +1,5 @@
 steps:
   #  Build
-  - name: 'maven'
-    entrypoint: 'mvn'
-    args: [ 'package' ]
+  - name: 'ubuntu'
+    args: [ './mvnw', 'package' ]
     id: BUILD
