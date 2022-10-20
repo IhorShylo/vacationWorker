@@ -2,7 +2,7 @@ steps:
   #  Check wrapped mvn version
   - name: 'maven'
     args: [ './mvnw', '-version' ]
-    id: BUILD
+    id: CHECK WRAPPED MVN VERSION
     #  Build
   - name: 'maven'
     args: [ './mvnw', 'package' ]
