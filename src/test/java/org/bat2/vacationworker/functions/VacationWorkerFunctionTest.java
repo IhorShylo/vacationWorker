@@ -32,13 +32,13 @@ public class VacationWorkerFunctionTest {
     private BufferedWriter writerOut;
     private StringWriter responseOut;
 
-    @BeforeEach
-    void setUp() throws IOException {
-        vacationWorkerFunction = new VacationWorkerFunction();
-        responseOut = new StringWriter();
-        writerOut = new BufferedWriter(responseOut);
-        when(response.getWriter()).thenReturn(writerOut);
-    }
+//    @BeforeEach
+//    void setUp() throws IOException {
+//        vacationWorkerFunction = new VacationWorkerFunction();
+//        responseOut = new StringWriter();
+//        writerOut = new BufferedWriter(responseOut);
+//        when(response.getWriter()).thenReturn(writerOut);
+//    }
 
 //    @Test
 //    @Disabled
