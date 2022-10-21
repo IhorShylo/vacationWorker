@@ -1,32 +1,32 @@
 package org.bat2.vacationworker.functions;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bat2.vacationworker.client.impl.TrelloClientImpl;
 import org.bat2.vacationworker.ecxeptions.UnexpectedRequestException;
 import org.bat2.vacationworker.ecxeptions.UnsupportedTrelloActionException;
 import org.bat2.vacationworker.model.google.VacationRecord;
 import org.bat2.vacationworker.model.trello.*;
 import org.bat2.vacationworker.service.CardService;
-import org.bat2.vacationworker.service.SecretService;
 import org.bat2.vacationworker.service.VacationService;
-import org.bat2.vacationworker.service.impl.CardServiceImpl;
-import org.bat2.vacationworker.service.impl.GoogleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.net.http.HttpClient;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
+@Component
 public class VacationWorkerFunction implements Consumer<TrelloRequest> {
     private static final Logger logger = Logger.getLogger(VacationWorkerFunction.class.getName());
     public static final String TARGET_LIST_ID = "62f227668555a62731adef73";
     public static final String VALID_ACTION_TYPE = "updateCard";
     public static final String VALID_TRANSLATION_KEY = "action_move_card_from_list_to_list";
+    private final VacationService vacationService;
+    private final CardService cardService;
 
-    private final SecretService secretService = SecretService.getInstance();
-    private final VacationService vacationService = new GoogleService(secretService.getApiKeyBytes());
-    private final CardService cardService = new CardServiceImpl(
-            new TrelloClientImpl(HttpClient.newBuilder().build(), secretService.getTrelloToken()));
-
+    @Autowired
+    public VacationWorkerFunction(VacationService vacationService, CardService cardService) {
+        this.vacationService = vacationService;
+        this.cardService = cardService;
+    }
 
     @Override
     public void accept(TrelloRequest request) {

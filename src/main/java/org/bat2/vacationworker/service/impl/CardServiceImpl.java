@@ -8,12 +8,12 @@ import org.bat2.vacationworker.model.google.VacationRecord;
 import org.bat2.vacationworker.model.trello.Card;
 import org.bat2.vacationworker.model.trello.Label;
 import org.bat2.vacationworker.service.CardService;
+import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
+@Service
 public class CardServiceImpl implements CardService {
     private static final Logger logger = Logger.getLogger(VacationWorkerFunction.class.getName());
     private final TrelloClient trelloClient;

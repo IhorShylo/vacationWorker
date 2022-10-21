@@ -31,6 +31,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>spring-cloud-gcp-dependencies</artifactId>
+                <version>3.4.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -41,11 +48,10 @@
             <artifactId>spring-cloud-function-adapter-gcp</artifactId>
             <version>${spring-cloud-function.version}</version>
         </dependency>
-
-        <!-- google client interaction -->
+        <!--Spring secret manager-->
         <dependency>
-            <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client</artifactId>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>spring-cloud-gcp-starter-secretmanager</artifactId>
         </dependency>
 
         <!-- google sheets api -->
@@ -59,12 +65,6 @@
         <dependency>
             <groupId>com.google.auth</groupId>
             <artifactId>google-auth-library-oauth2-http</artifactId>
-        </dependency>
-
-        <!--google cloud secrets-->
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-secretmanager</artifactId>
         </dependency>
 
         <!--TESTING-->

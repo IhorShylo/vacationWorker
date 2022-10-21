@@ -1,9 +1,9 @@
 # vacationWorker
 
-https://developers.google.com/api-client-library/java
+https://docs.spring.io/spring-cloud-function/docs/current/reference/html/spring-cloud-function.html#_function_catalog_and_flexible_function_signatures
 https://developer.atlassian.com/cloud/trello/rest/api-group-actions/
 
-# google fucntions guide
+# google functions guide
 
 For all the details see https://cloud.google.com/functions/docs/running/function-frameworks
 
@@ -11,7 +11,7 @@ The Rest api is inspired by https://help.sonatype.com/iqserver/automating/rest-a
 
 Install Google Cloud SDK as in guide at https://cloud.google.com/sdk/docs/install
 
-## gradle
+## gradle (currently not in use)
 
 Run the following command to confirm that your function builds:
 
@@ -42,7 +42,7 @@ Run the following command to confirm that your function builds:
 Another option is to use the mvn package command to compile your Java code, run any tests, and package the code up in a
 JAR file within the target directory. You can learn more about the Maven build lifecycle here.
 
-To test the function, run the following command:
+To run the function locally, run the following command:
 
 ```
 ./mvnw function:run
@@ -55,6 +55,8 @@ src/test/resources/localTest.sh
 
 ```
 
+## Deploy to GCP
+
 To deploy the function with an HTTP trigger, run the following command in the helloworld-gradle directory:
 
 ```
@@ -63,13 +65,13 @@ gcloud config set project vacation-worker-project
 gcloud functions deploy vacation-worker-function --region europe-west3  --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher --runtime java17 --trigger-http --source target/deploy --memory 512MB --allow-unauthenticated --timeout 90 --min-instances 0 --max-instances 1 --service-account vacation-worker-function@vacation-worker-project.iam.gserviceaccount.com
 ```
 
-where user-function-manual is the registered name by which your function will be identified in the console, and
+where vacation-worker-function is the registered name by which your function will be identified in the console, and
 --entry-point specifies your function's fully qualified class name (FQN).
 
 To view logs for your function with the gcloud CLI, use the logs read command, followed by the name of the function:
 
 ```
-gcloud functions logs read vacation-worker-function-manual --region europe-west3 
+gcloud functions logs read vacation-worker-function --region europe-west3 
 ```
 
 # trello webhooks guide
